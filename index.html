@@ -168,6 +168,48 @@
             border-color: rgba(59, 130, 246, 0.5);
         }
 
+        .video-section {
+            text-align: center;
+            margin-bottom: 80px;
+            padding: 0 20px;
+        }
+
+        .video-section h2 {
+            font-size: 2rem;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .video-section .video-subtitle {
+            color: #94a3b8;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding-bottom: 56.25%;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
         .features {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -363,6 +405,19 @@
             <div class="hero-buttons">
                 <a href="builder.html" class="primary-btn">Create Your Card</a>
                 <a href="#how-it-works" class="secondary-btn">See How It Works</a>
+            </div>
+        </section>
+
+        <section class="video-section">
+            <h2>See CardCraft in Action</h2>
+            <p class="video-subtitle">Watch the full tutorial to get started</p>
+            <div class="video-wrapper">
+                <iframe 
+                    src="https://www.youtube-nocookie.com/embed/hEcqUYQNF3Q?rel=0&controls=0&modestbranding=1&iv_load_policy=3&color=white&playsinline=1" 
+                    title="CardCraft Tutorial" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
             </div>
         </section>
 

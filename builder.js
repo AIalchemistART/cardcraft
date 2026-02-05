@@ -156,12 +156,12 @@ document.getElementById('exportBtn').addEventListener('click', () => {
         return;
     }
     
-    // Download the HTML file
+    // Download the HTML file as index.html for easy hosting
     const blob = new Blob([generatedCard], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `business-card-${Date.now()}.html`;
+    a.download = 'index.html';
     a.click();
     URL.revokeObjectURL(url);
     
