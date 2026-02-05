@@ -1,0 +1,422 @@
+/* CardCraft Welcome Modal Styles */
+
+.cc-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.cc-modal-overlay.cc-modal-show {
+    opacity: 1;
+}
+
+.cc-modal-container {
+    position: relative;
+    max-width: 700px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+    border: 3px solid rgba(59, 130, 246, 0.5);
+    border-radius: 20px;
+    box-shadow: 0 0 60px rgba(59, 130, 246, 0.4);
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+}
+
+.cc-modal-show .cc-modal-container {
+    transform: scale(1);
+}
+
+.cc-modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(226, 232, 240, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    color: #e2e8f0;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    z-index: 10;
+}
+
+.cc-modal-close:hover {
+    background: rgba(226, 232, 240, 0.2);
+    border-color: #3b82f6;
+    color: #3b82f6;
+}
+
+.cc-modal-content {
+    padding: 2.5rem 2rem;
+}
+
+.cc-modal-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.cc-modal-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    animation: cc-pulse 2s infinite;
+}
+
+@keyframes cc-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.cc-modal-header h2 {
+    font-size: 2rem;
+    color: #e2e8f0;
+    margin-bottom: 0.5rem;
+}
+
+.cc-gradient-text {
+    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.cc-modal-subtitle {
+    color: #94a3b8;
+    font-size: 1rem;
+}
+
+.cc-modal-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.cc-info-box {
+    padding: 1.25rem;
+    border-radius: 12px;
+    border: 2px solid;
+}
+
+.cc-box-blue {
+    background: rgba(59, 130, 246, 0.1);
+    border-color: rgba(59, 130, 246, 0.4);
+}
+
+.cc-box-purple {
+    background: rgba(139, 92, 246, 0.1);
+    border-color: rgba(139, 92, 246, 0.4);
+}
+
+.cc-box-cyan {
+    background: rgba(6, 182, 212, 0.1);
+    border-color: rgba(6, 182, 212, 0.4);
+}
+
+.cc-box-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.cc-box-icon {
+    font-size: 1.5rem;
+}
+
+.cc-info-box h3 {
+    font-size: 1.1rem;
+    color: #3b82f6;
+    margin: 0;
+}
+
+.cc-box-purple h3 {
+    color: #8b5cf6;
+}
+
+.cc-box-cyan h3 {
+    color: #06b6d4;
+}
+
+.cc-info-box p {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.cc-info-box strong {
+    color: #e2e8f0;
+    font-weight: 600;
+}
+
+.cc-newsletter-section {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+    border: 2px solid rgba(59, 130, 246, 0.3);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.cc-newsletter-header {
+    display: flex;
+    align-items: start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.cc-newsletter-icon {
+    font-size: 1.75rem;
+    flex-shrink: 0;
+}
+
+.cc-newsletter-header h3 {
+    font-size: 1.15rem;
+    color: #3b82f6;
+    margin: 0 0 0.25rem 0;
+}
+
+.cc-newsletter-header p {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.cc-newsletter-form {
+    margin-top: 1rem;
+}
+
+.cc-input-wrapper {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.cc-input-wrapper input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    background: rgba(226, 232, 240, 0.1);
+    border: 2px solid rgba(59, 130, 246, 0.3);
+    border-radius: 8px;
+    color: #e2e8f0;
+    font-size: 0.95rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    transition: all 0.3s;
+}
+
+.cc-input-wrapper input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    background: rgba(226, 232, 240, 0.15);
+}
+
+.cc-input-wrapper input::placeholder {
+    color: #94a3b8;
+    opacity: 0.6;
+}
+
+.cc-btn-submit {
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    white-space: nowrap;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.cc-btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+}
+
+.cc-btn-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.cc-newsletter-status {
+    margin-top: 0.75rem;
+    padding: 0.75rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    display: none;
+}
+
+.cc-newsletter-status:not(:empty) {
+    display: block;
+}
+
+.cc-status-success {
+    background: rgba(6, 182, 212, 0.1);
+    border: 1px solid rgba(6, 182, 212, 0.3);
+    color: #06b6d4;
+}
+
+.cc-status-error {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #ef4444;
+}
+
+.cc-signup-success {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: rgba(6, 182, 212, 0.1);
+    border: 2px solid rgba(6, 182, 212, 0.3);
+    border-radius: 8px;
+    color: #06b6d4;
+    font-weight: 500;
+}
+
+.cc-signup-success svg {
+    flex-shrink: 0;
+}
+
+.cc-modal-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.cc-modal-checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(59, 130, 246, 0.4);
+    border-radius: 4px;
+    background: rgba(226, 232, 240, 0.1);
+    cursor: pointer;
+    appearance: none;
+    position: relative;
+}
+
+.cc-modal-checkbox input[type="checkbox"]:checked {
+    background: #3b82f6;
+    border-color: #3b82f6;
+}
+
+.cc-modal-checkbox input[type="checkbox"]:checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.cc-modal-checkbox label {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    cursor: pointer;
+    user-select: none;
+}
+
+.cc-modal-actions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.cc-btn {
+    flex: 1;
+    padding: 0.9rem 1.5rem;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.3s;
+    cursor: pointer;
+    border: none;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    display: block;
+}
+
+.cc-btn-secondary {
+    background: rgba(226, 232, 240, 0.1);
+    border: 2px solid rgba(59, 130, 246, 0.3);
+    color: #e2e8f0;
+}
+
+.cc-btn-secondary:hover {
+    background: rgba(226, 232, 240, 0.15);
+    border-color: #3b82f6;
+}
+
+.cc-btn-primary {
+    background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
+    color: white;
+    border: none;
+}
+
+.cc-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(236, 72, 153, 0.4);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .cc-modal-content {
+        padding: 2rem 1.5rem;
+    }
+
+    .cc-modal-header h2 {
+        font-size: 1.75rem;
+    }
+
+    .cc-input-wrapper {
+        flex-direction: column;
+    }
+
+    .cc-btn-submit {
+        width: 100%;
+    }
+
+    .cc-modal-actions {
+        flex-direction: column;
+    }
+
+    .cc-modal-container {
+        max-height: 95vh;
+    }
+}
+
+/* Scrollbar styling for modal */
+.cc-modal-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.cc-modal-container::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+.cc-modal-container::-webkit-scrollbar-thumb {
+    background: rgba(59, 130, 246, 0.4);
+    border-radius: 10px;
+}
+
+.cc-modal-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(59, 130, 246, 0.6);
+}

@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0f172a">
+    <title>CardCraft Builder</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+
+        .builder-container {
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            height: 100vh;
+        }
+
+        .sidebar {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            overflow-y: auto;
+            padding: 30px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 30px;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+
+        .logo:hover {
+            opacity: 0.8;
+        }
+
+        .logo a {
+            text-decoration: none;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section h3 {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            color: #94a3b8;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #cbd5e1;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            background: rgba(51, 65, 85, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #e2e8f0;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: rgba(51, 65, 85, 0.8);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+            font-family: inherit;
+        }
+
+        .template-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .template-option {
+            padding: 15px;
+            background: rgba(51, 65, 85, 0.5);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .template-option:hover {
+            border-color: #3b82f6;
+            background: rgba(51, 65, 85, 0.8);
+        }
+
+        .template-option.selected {
+            border-color: #3b82f6;
+            background: rgba(59, 130, 246, 0.2);
+        }
+
+        .template-option .icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .template-option .name {
+            font-size: 0.9rem;
+            color: #cbd5e1;
+        }
+
+        .generate-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+            margin-top: 20px;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .generate-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .preview-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            position: relative;
+        }
+
+        .preview-frame {
+            width: 100%;
+            max-width: 450px;
+            height: 600px;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .preview-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #64748b;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .preview-placeholder .icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .preview-placeholder h3 {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+            color: #475569;
+        }
+
+        .preview-placeholder p {
+            color: #64748b;
+        }
+
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(59, 130, 246, 0.3);
+            border-top-color: #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .actions {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            padding: 10px 20px;
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #e2e8f0;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .action-btn:hover {
+            background: rgba(51, 65, 85, 0.8);
+            border-color: #3b82f6;
+        }
+
+        .info-box {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: #94a3b8;
+            margin-bottom: 20px;
+        }
+
+        .regen-hint {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(147, 51, 234, 0.1));
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 16px;
+            padding: 24px 28px;
+            max-width: 280px;
+            text-align: center;
+            z-index: 5;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .regen-hint p {
+            margin: 0;
+            color: #94a3b8;
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+
+        .regen-hint strong {
+            color: #3b82f6;
+            font-size: 1.1rem;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 32px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .modal-header h2 {
+            color: #fff;
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .modal-body {
+            color: #cbd5e1;
+            line-height: 1.8;
+        }
+
+        .modal-body h3 {
+            color: #3b82f6;
+            font-size: 1.1rem;
+            margin: 24px 0 12px;
+        }
+
+        .modal-body h3:first-child {
+            margin-top: 0;
+        }
+
+        .modal-body ol, .modal-body ul {
+            margin: 12px 0;
+            padding-left: 24px;
+        }
+
+        .modal-body li {
+            margin: 8px 0;
+        }
+
+        .modal-body code {
+            background: rgba(59, 130, 246, 0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #3b82f6;
+        }
+
+        .modal-body strong {
+            color: #fff;
+        }
+
+        .reroll-controls {
+            display: none !important;
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 16px;
+            z-index: 50;
+            width: 180px;
+        }
+
+        .reroll-controls.active {
+            display: none !important;
+        }
+
+        .reroll-header {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            margin-bottom: 12px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .reroll-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .reroll-btn {
+            padding: 12px 14px;
+            background: rgba(51, 65, 85, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #e2e8f0;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: flex-start;
+            width: 100%;
+        }
+
+        .reroll-btn:hover:not(:disabled) {
+            background: rgba(59, 130, 246, 0.3);
+            border-color: #3b82f6;
+            transform: translateX(-2px);
+        }
+
+        .reroll-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .reroll-btn .icon {
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .reroll-btn span:last-child {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        @media (max-width: 1024px) {
+            .builder-container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                border-right: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                height: auto;
+            }
+
+            .preview-area {
+                min-height: 600px;
+            }
+
+            .reroll-controls {
+                right: 10px;
+                width: 160px;
+                padding: 12px;
+            }
+
+            .reroll-btn {
+                padding: 10px;
+                font-size: 0.75rem;
+            }
+
+            .reroll-header {
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="builder-container">
+        <div class="sidebar">
+            <div class="logo"><a href="index.html">CardCraft</a></div>
+            
+            <div class="api-status-section" style="background: rgba(51, 65, 85, 0.5); padding: 12px; border-radius: 8px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+                <div id="apiKeyStatus" style="font-size: 0.9rem;"><span style="color: #f59e0b;">⚠ No API Key</span></div>
+                <button class="action-btn" id="setupApiKeyBtn" onclick="document.getElementById('apiKeyModal').classList.add('active')" style="padding: 6px 12px; font-size: 0.85rem;">Setup API Key</button>
+            </div>
+
+            <div class="section">
+                <h3>1. Choose Template</h3>
+                <div class="template-grid">
+                    <div class="template-option selected" data-template="modern">
+                        <div class="icon">🚀</div>
+                        <div class="name">Modern Tech</div>
+                    </div>
+                    <div class="template-option" data-template="minimal">
+                        <div class="icon">✨</div>
+                        <div class="name">Minimal</div>
+                    </div>
+                    <div class="template-option" data-template="creative">
+                        <div class="icon">🎨</div>
+                        <div class="name">Creative</div>
+                    </div>
+                    <div class="template-option" data-template="business">
+                        <div class="icon">💼</div>
+                        <div class="name">Business</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>2. Your Information</h3>
+                <div class="form-group">
+                    <label>Full Name *</label>
+                    <input type="text" id="fullName" placeholder="John Doe" required>
+                </div>
+                <div class="form-group">
+                    <label>Title/Role</label>
+                    <input type="text" id="title" placeholder="Software Engineer">
+                </div>
+                <div class="form-group">
+                    <label>Email *</label>
+                    <input type="email" id="email" placeholder="john@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input type="tel" id="phone" placeholder="(555) 123-4567">
+                </div>
+                <div class="form-group">
+                    <label>Website</label>
+                    <input type="url" id="website" placeholder="https://example.com">
+                </div>
+                <div class="form-group">
+                    <label>Company/Brand</label>
+                    <input type="text" id="company" placeholder="Acme Inc">
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>3. Design Preferences</h3>
+                <div class="info-box">
+                    💡 Describe your desired style. AI will generate custom colors, fonts, animations, and effects while maintaining functionality.
+                </div>
+                <div class="form-group">
+                    <label>Style Description *</label>
+                    <textarea id="stylePrompt" placeholder="Example: 'Dark cyberpunk theme with neon cyan and magenta accents, futuristic animations, and a tech-focused aesthetic'" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Primary Colors (optional)</label>
+                    <input type="text" id="colors" placeholder="e.g., blue, purple, pink">
+                </div>
+                <div class="form-group">
+                    <label>Mood/Vibe</label>
+                    <select id="mood">
+                        <option value="">Select a mood...</option>
+                        <option value="professional">Professional</option>
+                        <option value="creative">Creative</option>
+                        <option value="playful">Playful</option>
+                        <option value="elegant">Elegant</option>
+                        <option value="energetic">Energetic</option>
+                        <option value="minimal">Minimal</option>
+                    </select>
+                </div>
+            </div>
+
+            <button class="generate-btn" id="generateBtn">Generate My Card</button>
+        </div>
+
+        <div class="preview-area">
+            <div class="actions">
+                <button class="action-btn" id="undoBtn" style="display: none;" disabled title="No undo history">
+                    ↩️ Undo
+                </button>
+                <button class="action-btn" id="redoBtn" style="display: none;" disabled title="No redo history">
+                    ↪️ Redo
+                </button>
+                <button class="action-btn" id="exportBtn" style="display: none;">💾 Save and Deploy</button>
+                <!-- <button class="action-btn" id="deployBtn" style="display: none;">Deploy Live</button> -->
+            </div>
+
+            <div class="preview-frame" id="previewFrame">
+                <div class="preview-placeholder">
+                    <div class="icon">🎴</div>
+                    <h3>Your Card Preview</h3>
+                    <p>Fill in your details and click "Generate My Card" to see your AI-designed business card</p>
+                </div>
+            </div>
+
+            <!-- Regeneration Hint -->
+            <div class="regen-hint" id="regenHint" style="display: none;">
+                <p><strong>💡 Don't like this one?</strong> Press "Generate My Card" to try again. You can always use the undo button to go back to a previous card generation.</p>
+            </div>
+
+            <div class="loading-overlay" id="loadingOverlay">
+                <div class="spinner"></div>
+            </div>
+
+            <!-- Section Reroll Controls -->
+            <div class="reroll-controls" id="rerollControls">
+                <!-- <div class="reroll-header">✨ Refine Individual Sections</div> -->
+                <!-- Reroll Controls - DISABLED: Complete reroll + undo/redo is sufficient -->
+                <div class="reroll-controls" style="display: none;">
+                    <button class="reroll-btn" id="rerollHeader" data-section="header">
+                        <span class="icon">🎨</span>
+                        <span>Header & Brand</span>
+                    </button>
+                    <button class="reroll-btn" id="rerollContact" data-section="contact">
+                        <span class="icon">📇</span>
+                        <span>Contact Info</span>
+                    </button>
+                    <button class="reroll-btn" id="rerollQR" data-section="qr">
+                        <span class="icon">📱</span>
+                        <span>QR Code</span>
+                    </button>
+                    <button class="reroll-btn" id="rerollButtons" data-section="buttons">
+                        <span class="icon">🔘</span>
+                        <span>Action Buttons</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Smartphone Directions Modal -->
+    <div class="modal-overlay" id="smartphoneModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📱 Add to Your Smartphone</h2>
+                <button class="modal-close" id="closeModal">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="warning-section">
+                    <h4>⚠️ Important: Your Card Needs to Be Hosted Online</h4>
+                    <p>To use "Add to Home Screen" with the custom CardCraft icon, your business card HTML file must be hosted on a web server (not opened as a local file).</p>
+                </div>
+
+                <h3>� Step 1: Host Your Card (Choose One)</h3>
+                
+                <div class="hosting-option">
+                    <h4>Option A: Netlify Drop (Easiest - 30 seconds)</h4>
+                    <ol>
+                        <li>Go to <a href="https://app.netlify.com/drop" target="_blank">app.netlify.com/drop</a></li>
+                        <li>Drag your downloaded HTML file into the box</li>
+                        <li>Get instant URL like <code>https://your-card.netlify.app</code></li>
+                    </ol>
+                </div>
+
+                <div class="hosting-option">
+                    <h4>Option B: GitHub Pages (Free Forever)</h4>
+                    <ol>
+                        <li>Create a GitHub account at <a href="https://github.com" target="_blank">github.com</a></li>
+                        <li>Create new repository, name it <code>business-card</code></li>
+                        <li>Upload your HTML file and rename it to <code>index.html</code></li>
+                        <li>Go to Settings → Pages → Enable GitHub Pages</li>
+                        <li>Your URL: <code>https://username.github.io/business-card</code></li>
+                    </ol>
+                </div>
+
+                <h3>📱 Step 2: Add to Your Phone's Home Screen</h3>
+                
+                <h4>For iPhone/iPad (iOS):</h4>
+                <ol>
+                    <li>Open your hosted card URL in <strong>Safari</strong></li>
+                    <li>Tap the <strong>Share button</strong> (square with arrow)</li>
+                    <li>Tap <strong>"Add to Home Screen"</strong></li>
+                    <li>The CardCraft icon will appear - tap <strong>"Add"</strong></li>
+                </ol>
+
+                <h4>For Android:</h4>
+                <ol>
+                    <li>Open your hosted card URL in <strong>Chrome</strong></li>
+                    <li>Tap the <strong>menu</strong> (three dots)</li>
+                    <li>Tap <strong>"Add to Home screen"</strong></li>
+                    <li>The CardCraft icon will appear - tap <strong>"Add"</strong></li>
+                </ol>
+
+                <h3>💡 Pro Tips:</h3>
+                <ul>
+                    <li><strong>Share the URL:</strong> Send your hosted URL instead of the HTML file for easier sharing</li>
+                    <li><strong>QR Code:</strong> Your card already has a QR code that links to wherever it's hosted</li>
+                    <li><strong>Custom Domain:</strong> Both Netlify and GitHub Pages support custom domains for a professional touch</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- API Key Modal -->
+    <div id="apiKeyModalContainer"></div>
+
+    <script src="api-modal.js"></script>
+    <script src="scaffolds.js"></script>
+    <script src="gemini-api.js"></script>
+    <script src="builder.js"></script>
+    <script src="reroll-handler.js"></script>
+    <script>
+        // Load API modal
+        fetch('api-modal.html')
+            .then(r => r.text())
+            .then(html => {
+                document.getElementById('apiKeyModalContainer').innerHTML = html;
+                updateApiKeyStatus();
+            });
+    </script>
+</body>
+</html>

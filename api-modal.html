@@ -1,0 +1,411 @@
+<!-- API Key Modal Component -->
+<div id="apiKeyModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>🔑 Setup Your API Key</h2>
+            <button class="modal-close" onclick="closeApiModal()">&times;</button>
+        </div>
+        
+        <div class="modal-body">
+            <div class="info-section">
+                <h3>Why do I need an API key?</h3>
+                <p>CardCraft uses Google's Gemini 3.0 Pro to generate custom designs based on your style preferences. You'll need your own API key to enable AI-powered generation.</p>
+                
+                <div class="benefits">
+                    <div class="benefit-item">
+                        <span class="icon">✨</span>
+                        <div>
+                            <strong>Free Tier Available</strong>
+                            <p>Google offers generous free tier limits for personal projects</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <span class="icon">🔒</span>
+                        <div>
+                            <strong>Your Key, Your Control</strong>
+                            <p>API key stored locally in your browser, never sent to our servers</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <span class="icon">⚡</span>
+                        <div>
+                            <strong>Unlimited Customization</strong>
+                            <p>Generate as many unique designs as you want</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="steps-section">
+                <h3>How to get your API key:</h3>
+                <div class="step-list">
+                    <div class="step-item">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Go to Google AI Studio</h4>
+                            <p>Visit <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">aistudio.google.com/app/apikey</a></p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>Sign in with Google</h4>
+                            <p>Use your Google account to access AI Studio</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>Create API Key</h4>
+                            <p>Click "Create API Key" and select a Google Cloud project (or create new one)</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h4>Copy Your Key</h4>
+                            <p>Copy the generated API key and paste it below</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="key-input-section">
+                <h3>Enter your API key:</h3>
+                <div class="input-group">
+                    <input 
+                        type="password" 
+                        id="apiKeyInput" 
+                        placeholder="AIzaSy..." 
+                        class="api-key-input"
+                    >
+                    <button class="toggle-visibility" onclick="toggleKeyVisibility()">
+                        <span id="visibilityIcon">👁️</span>
+                    </button>
+                </div>
+                <p class="input-help">Your API key is stored locally and never leaves your browser</p>
+            </div>
+
+            <div class="warning-section">
+                <h4>⚠️ Important Security Notes:</h4>
+                <ul>
+                    <li>Never share your API key publicly</li>
+                    <li>Don't commit API keys to version control</li>
+                    <li>You can revoke/regenerate keys anytime in AI Studio</li>
+                    <li>Consider setting usage limits in Google Cloud Console</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn-secondary" onclick="closeApiModal()">Cancel</button>
+            <button class="btn-primary" onclick="saveApiKey()">Save & Continue</button>
+        </div>
+    </div>
+</div>
+
+<style>
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(15, 23, 42, 0.9);
+    backdrop-filter: blur(10px);
+    overflow-y: auto;
+}
+
+.modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-content {
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+    border-radius: 24px;
+    max-width: 700px;
+    width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    padding: 30px 30px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.8rem;
+    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: #94a3b8;
+    font-size: 2rem;
+    cursor: pointer;
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.modal-close:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #e2e8f0;
+}
+
+.modal-body {
+    padding: 30px;
+}
+
+.info-section,
+.steps-section,
+.key-input-section,
+.warning-section {
+    margin-bottom: 30px;
+}
+
+.info-section h3,
+.steps-section h3,
+.key-input-section h3 {
+    color: #e2e8f0;
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+}
+
+.info-section p {
+    color: #94a3b8;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.benefits {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.benefit-item {
+    display: flex;
+    gap: 15px;
+    padding: 15px;
+    background: rgba(51, 65, 85, 0.5);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.benefit-item .icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+.benefit-item strong {
+    color: #e2e8f0;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.benefit-item p {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.step-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.step-item {
+    display: flex;
+    gap: 15px;
+}
+
+.step-number {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.step-content h4 {
+    color: #e2e8f0;
+    margin-bottom: 5px;
+    font-size: 1.1rem;
+}
+
+.step-content p {
+    color: #94a3b8;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.step-content a {
+    color: #60a5fa;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.step-content a:hover {
+    color: #3b82f6;
+    text-decoration: underline;
+}
+
+.input-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.api-key-input {
+    flex: 1;
+    padding: 14px;
+    background: rgba(51, 65, 85, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: #e2e8f0;
+    font-size: 0.95rem;
+    font-family: 'Courier New', monospace;
+    transition: all 0.3s;
+}
+
+.api-key-input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    background: rgba(51, 65, 85, 0.8);
+}
+
+.toggle-visibility {
+    padding: 10px 15px;
+    background: rgba(51, 65, 85, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: all 0.3s;
+}
+
+.toggle-visibility:hover {
+    background: rgba(51, 65, 85, 0.8);
+    border-color: #3b82f6;
+}
+
+.input-help {
+    color: #64748b;
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+.warning-section {
+    background: rgba(251, 191, 36, 0.1);
+    border: 1px solid rgba(251, 191, 36, 0.3);
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.warning-section h4 {
+    color: #fbbf24;
+    margin-bottom: 12px;
+    font-size: 1rem;
+}
+
+.warning-section ul {
+    margin: 0;
+    padding-left: 20px;
+    color: #94a3b8;
+}
+
+.warning-section li {
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+.modal-footer {
+    padding: 20px 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.btn-primary,
+.btn-secondary {
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: none;
+    font-size: 1rem;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+}
+
+.btn-secondary {
+    background: rgba(51, 65, 85, 0.5);
+    color: #e2e8f0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-secondary:hover {
+    background: rgba(51, 65, 85, 0.8);
+}
+
+@media (max-width: 768px) {
+    .modal-content {
+        margin: 10px;
+    }
+
+    .modal-header,
+    .modal-body,
+    .modal-footer {
+        padding: 20px;
+    }
+
+    .benefit-item {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .step-item {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+</style>
